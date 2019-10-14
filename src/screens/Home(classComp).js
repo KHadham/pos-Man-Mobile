@@ -24,20 +24,76 @@ import { getAllItem } from '../public/redux/actions/item'
 // }
 
 export default function Home() {
+  const [menuState, setMenuState] = useState([]);
+  const [transformedArray, setTransformedArray] = useState([]);
+  const [stickyHead, setStickyHead] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  let menuState, transformedArray, stickyHead = []
-  menuState = useSelector(state => state.reItem.itemList)
-  const dispatch = useDispatch();
+  // let getData, transformedArray, stickyHead = []
 
-  useEffect(() => {
-    const fetch = () => {
-      dispatch(getAllItem())
+  const getData = useSelector(state => state.reItem.itemList)
+  const dispatch = useDispatch();
+  // const getItems = (() => {
+  //   // dispatch(getAllItem())
+  //   const setItem = (()=>{
+  //     setMenuState(getData);
+  //   })
+  //   setItem()
+  // })
+
+  let tempData = []
+  transformedArray.map(obj => {
+    if (obj.price == null) {
+      tempData.push(transformedArray.indexOf(obj));
     }
-    fetch()
+  });
+  tempData.push(0);
+
+  // useEffect(() => {
+  //   getItems()
+  // }, [])
+
+  useEffect( async () => {
+    const fetch = async () => {
+      await dispatch(getAllItem())
+    }
+     fetch()
+    dispatch(getAllItem())
+    // const setItem = async (() => {
+    //   setMenuState(getData)
+    // })
+    const setItem = async () => {
+      await setMenuState(getData)
+    }
+     setItem()
+    // const transform = () => {
+    //   setTransformedArray(menuState.flatMap(({ items, ...o }) => [o, ...items]));
+    // }
+    // const getHead = (() =>{
+    //   setStickyHead(tempData)
+    // })
+    // transform()
+    // getHead()
   }, [])
 
-  transformedArray = menuState.flatMap(({ items, ...o }) => [o, ...items])
+  // useEffect(() => {
+
+  //   const getHead = (() =>{
+  //     setStickyHead(tempData)
+  //   })
+  //   getHead()
+  // }, [])
+  // dispatch(getAllItem())
+  // .then(()=>{
+  //   setMenuState(getData);
+  // })
+  // .catch((error)=>{
+  //   console.log('error', error)
+  // })
+  // setMenuState(getData);
+  // setTransformedArray(menuState.flatMap(({ items, ...o }) => [o, ...items]));
+  // setStickyHead(tempData);
+  // transformedArray = menuState.flatMap(({ items, ...o }) => [o, ...items])
 
   const angkaRP = (angka) => {
     var rupiah = '';
@@ -46,25 +102,17 @@ export default function Home() {
     return 'Rp. ' + rupiah.split('', rupiah.length - 1).reverse().join('');
   };
 
-  const RefreshFunc =  () => {
-    setIsLoading(true);
-    dispatch(getAllItem())
-    setIsLoading(false);
-    // dispatch(getAllItem())
-    //   .then(() => {
-    //     setIsLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     alert(error)
-    //   })
-  }
+  // const RefreshFunc = async () => {
+  //   setIsLoading(true);
+  //   // dispatch(getAllItem())
+  //     .then(() => {
+  //       setIsLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       alert(error)
+  //     })
+  // }
 
-  transformedArray.map(obj => {
-    if (obj.price == null) {
-      stickyHead.push(transformedArray.indexOf(obj));
-    }
-  });
-  stickyHead.push(0);
 
   console.log('menu state', menuState)
   console.log('objectsss', transformedArray)
@@ -100,9 +148,9 @@ export default function Home() {
       <>
         <Header title="Menu List" />
         <FlatList
-          refreshing={isLoading}
-          onRefresh={RefreshFunc}
-          data={transformedArray}
+          // refreshing={isLoading}
+          // onRefresh={RefreshFunc}
+          data={menuState}
           renderItem={renderItem}
         // stickyHeaderIndices={stickyHead}
         />
