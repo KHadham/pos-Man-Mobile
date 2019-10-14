@@ -4,7 +4,7 @@ import linknya from "../link";
 export const getAllItem = () => {
     return {
         type: 'GET_ITEM',
-        payload: Axios.get(`${linknya}/item/`)
+        payload: Axios.get(`${linknya}/category/join`)
     }
 }
 
