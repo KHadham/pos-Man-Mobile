@@ -1,107 +1,63 @@
 import React,{Component} from 'react'
-import { View,  } from 'react-native'
-import Modal from 'react-native-modal'
-import { Button,Icon, Text, Container,Header, Item, Input,Footer, FooterTab,List,ListItem,} from 'native-base';
-
+import { View,Image   } from 'react-native'
+import Modal from "react-native-modalbox";
+import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
+import {angkaRP} from '../public/helpers/helper'
 export class ModalComp extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = { 
-      searchKey:'',
-      riwayat:[]
-    }
-  }
-
-  sendData = (data) => {
-    this.props.parentCallback(data)
-  }
-
-  searchData = (data) => {
-    this.props.searchCallback(data)
-  }
 
   render() {
     return (
       <Modal
-      onSwipeComplete={this.props.toggleModal}
-      onBackdropPress={this.props.toggleModal}
-      isVisible={this.props.visibility}
-      swipeDirection='down'
-      style={{
-        justifyContent: 'flex-end',
-        margin: 0
-      }}
-    >
-      {this.props.buttonID == 'filter' ?
-        <>
-          <View 
-            style={{ 
-              height: '80%',
-              backgroundColor: '#0050ac',
-              padding: 16
+          isOpen={this.props.visibility}
+          swipeToClose
+          onClosed={this.props.toggleModal}
+          backButtonClose
+          animationDuration={100}
+          backdropOpacity={0.5}
+          useNativeDriver="true"
+          position="bottom"
+          style={{
+            height: 'auto',
+            backgroundColor: '#fff',
+          }}
+        >
+
+          <View
+            style={{
+              height: 'auto',
+              borderWidth:2
             }}
           >
-      
-          <View style={{ height: '10%' }} />
-            <Container >
-              <Header style={{backgroundColor:"white"}} searchBar rounded>
+          <Card style={{borderWidth:2}}>
+            <CardItem style={{borderRightWidth:2,borderLeftWidth:2,borderTopWidth:2}}  >
+              <Text>{this.props.data.item_name}</Text>
+            </CardItem>
+            <CardItem style={{borderRightWidth:2,borderLeftWidth:2}} >
+              <Image source={{uri: `${this.props.data.item_image}`}} style={{height: 200, width: null,flex: 1}}/>
+             </CardItem>
+            <CardItem style={{borderRightWidth:2,borderLeftWidth:2,borderBottomWidth:2}} footer >
+              <Left style={{borderWidth:2}}><Text>text</Text></Left>
+              <Body style={{borderWidth:2}}><Text>text</Text></Body>
+              <Right style={{borderWidth:2}}><Text>text</Text></Right>
+              {/* {this.props.data.price == null || undefined ?
+              <Text>harga</Text>
+              :
+              <Text>{angkaRP(this.props.data.price)}</Text>
+            } */}
+            </CardItem>
+          </Card>
+            {/* <List>
+              
+              <ListItem>
+                <Text style={{ color: 'white' }}>Termahal</Text>
+              </ListItem>
+            </List> */}
+            <Button bordered>
+              <Text style={{color:"black"}}>Urutkan</Text>
+            </Button>
 
-                <Item>
-                  <Input value={this.state.searchKey} onChangeText={searchKey => this.setState({ searchKey: searchKey })} placeholder="Search" />
-                  <Icon name="ios-search" />
-                </Item>
-                <Button transparent>
-                  <Text>Cari provinsi</Text>
-                </Button>
-
-              </Header>
-
-              <List>
-                <ListItem onPress={()=>this.sendData('Terdekat')}>
-                  <Text style={{color:'white'}}>Terdekat</Text>
-                </ListItem>
-              </List>
-            </Container>
           </View>
-
-          <Footer>
-            <FooterTab>
-              <Button onPress={()=>this.searchData('')} bordered light>
-                <Text>reset filter</Text>
-              </Button>
-              <Button onPress={()=>this.searchData(this.state.searchKey)} bordered light >
-                <Text>filter lokasi</Text>
-              </Button>
-            </FooterTab>
-          </Footer>
-          </>
-          :
-          <View 
-            style={{ 
-              height: '33%',
-              backgroundColor: '#0050ac',
-            }}
-          >
-            <List>
-              <ListItem onPress={()=>this.sendData('Terdekat')}>
-                <Text style={{color:'white'}}>Terdekat</Text>
-              </ListItem>
-              <ListItem>
-                <Text onPress={()=>this.sendData('asc')} style={{color:'white'}}>Termurah</Text>
-              </ListItem>
-              <ListItem>
-                <Text onPress={()=>this.sendData('desc')} style={{color:'white'}}>Termahal</Text>
-              </ListItem>
-            </List>
-          
-          <Button onPress={this.props.toggleModal} bordered full light>
-            <Text>Urutkan</Text>
-          </Button>
-
-        </View>
-        }
-      </Modal>
+        </Modal>
     )
   }
 }

@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import {  Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
 import { Text, View } from 'react-native'
 
-const Ndass = ({ title, subtitle }) => {
+const Ndass = ({ title, buttonFunc }) => {
   return (
-    <Header>
+    <Header style={{backgroundColor:"white"}}>
       <Left style={{flex:1}}>
-        <Button transparent>
-          <Icon name='menu' />
+        <Button bordered onPress={buttonFunc} transparent>
+          <Icon style={{color:"black"}} name='menu' />
         </Button>
       </Left>
       <Body style={{flex:1}}>
-        <Title style={{alignSelf:"center" }}>{title}</Title>
+        <Title style={{alignSelf:"center",color:"black" }}>{title}</Title>
       </Body>
       <Right onPress={()=>alert("tes")} style={{flex:1}}>
-        <Button transparent>
-          <Icon name='person' />
+        <Button  transparent>
+          <Icon style={{color:"black"}} name='person' />
         </Button>
       </Right>
     </Header>

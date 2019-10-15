@@ -7,3 +7,9 @@ export const getAllCategory = () => {
         payload: Axios.get(`${linknya}/category/`)
     }
 }
+export const getCategoryJoin = () => {
+    return {
+        type: 'GET_CATEGORY_JOIN',
+        payload: Axios.get(`${linknya}/category/joins`)
+    }
+}
