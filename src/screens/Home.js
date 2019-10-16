@@ -91,7 +91,7 @@ export default function Home({ navigation }) {
                 </Button>
               </View> */}
               <View style={{right:"-10%"}}>
-                <Button  small success>
+                <Button style={{height:20}} small success>
                   <Text>tambah</Text>
                 </Button>
               </View>

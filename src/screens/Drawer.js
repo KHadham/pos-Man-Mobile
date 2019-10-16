@@ -6,7 +6,7 @@ export default function Navbar ({title}){
 	const counter = useSelector(state => state.reCart.CartQty)
 	
   return (
-		<View>
+		<View >
       <Text>Home</Text>
     </View>
 	)

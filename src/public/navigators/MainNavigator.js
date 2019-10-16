@@ -3,7 +3,6 @@ import { createAppContainer, createStackNavigator, createSwitchNavigator, create
 import Home from '../../screens/Home'
 import Sider from '../../screens/Drawer'
 import Detail from '../../screens/DetailHarga'
-import Ndass from '../../components//Header'
 
 const AppNavigator = createStackNavigator(
   {
@@ -25,15 +24,15 @@ const AppNavigator = createStackNavigator(
       screen: Sider,
       navigationOptions: { header: null }
     },
-    Ndass: {
-      screen: Ndass,
-      navigationOptions: { header: null }
-    },
+  
   }
 )
 const drawer = createDrawerNavigator(
-  { AppNavigator }, { contentComponent: Sider }
-
+  { AppNavigator },{ contentComponent: Detail,
+      drawerWidth:200,drawerPosition: "left" }
+) 
+const right = createDrawerNavigator(
+  { drawer },{ contentComponent: Sider,
+    drawerWidth:200,drawerPosition: "right" }
 )
-
-export default createAppContainer(createSwitchNavigator({ drawer }))
+export default createAppContainer(createSwitchNavigator({ right }))

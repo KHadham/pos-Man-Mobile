@@ -12,7 +12,7 @@ export class ModalComp extends Component {
           swipeToClose
           onClosed={this.props.toggleModal}
           backButtonClose
-          animationDuration={100}
+          animationDuration={333}
           backdropOpacity={0.5}
           useNativeDriver="true"
           position="bottom"
@@ -28,12 +28,12 @@ export class ModalComp extends Component {
               borderWidth:2
             }}
           >
-          <Card style={{borderWidth:2}}>
+          <Card style={{borderWidth:6}}>
             <CardItem style={{borderRightWidth:2,borderLeftWidth:2,borderTopWidth:2}}  >
               <Text>{this.props.data.item_name}</Text>
             </CardItem>
-            <CardItem style={{borderRightWidth:2,borderLeftWidth:2}} >
-              <Image source={{uri: `${this.props.data.item_image}`}} style={{height: 200, width: null,flex: 1}}/>
+            <CardItem style={{borderRightWidth:2,borderLeftWidth:2,justifyContent: "center"}} >
+              <Image source={{uri: `${this.props.data.item_image}`}} style={{flex:1, marginVertical:-20,width:250,height:250,resizeMode:"contain"}}/>
              </CardItem>
             <CardItem style={{borderRightWidth:2,borderLeftWidth:2,borderBottomWidth:2}} footer >
               <Left style={{borderWidth:2}}><Text>text</Text></Left>
