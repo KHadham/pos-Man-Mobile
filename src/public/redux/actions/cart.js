@@ -1,4 +1,4 @@
-export const cartOperator = (item,id) => {
+export const cartOperator = (item, id) => {
     return {
         type: 'CART_OPERATOR',
         item,
@@ -23,10 +23,16 @@ export const cartInternalPlus = (value) => {
         value,
     }
 }
-export const cartInternal = (value,id) => {
+export const cartInternal = (value, id) => {
     return {
         type: 'CART_INTERNAL',
         value,
         id
+    }
+}
+export const cartTransFormedArray = (array) => {
+    return {
+        type: 'CART_TRANSFORM',
+        array
     }
 }

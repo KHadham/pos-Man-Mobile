@@ -1,148 +1,91 @@
 import React, { Component } from 'react'
-import { Alert, StyleSheet, ScrollView } from 'react-native'
-import { Form, Item, Header, Left, Body, Right, Title, Subtitle, Input, Button, Text, Icon, Label, Container, Toast, Row, Picker, Textarea, View } from 'native-base'
-import ImagePicker from 'react-native-image-picker'
-
-// import redux
-import { connect } from 'react-redux'
-import { getKategory } from '../public/redux/actions/kategori'
-import { postNote } from '../public/redux/actions/note'
-
-
-class Register extends Component {
-
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            text: '',
-            title:'',
-            id_category: '',
-            selected: undefined,
-            kategoriS:[]
-        }
-    }
-
-    componentDidMount = async () => {
-			await this.props.dispatch( getKategory() )
-			
-			this.setState({	kategoriS: this.props.kategoriP })
-		}
-		
-    Post =() => {
-      var text = this.state.text
-      var title = this.state.title
-      var id_category = this.state.id_category
-      var data = {
-        text,title,id_category
-      }
-
-      this.props.dispatch(postNote(data))
-
-      Alert.alert(
-        'Alert Title',
-        'My Alert Msg',
-        [
-          {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {text: 'OK', onPress: () => this.props.navigation.navigate('Home')},
-        ],
-        {cancelable: false},
-      );
-     
-      
-    }
-
-
-    render() {
-      console.log("text",this.state.text)
-      console.log("title",this.state.title)
-      console.log("id_category",this.state.id_category)
-      return (
-        <Container>
-        <Header>
-          <Left>
-            <Button onPress={() => this.props.navigation.goBack()} transparent>
-              <Icon name='arrow-back' />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Add note</Title>
-            <Subtitle>Add note juga</Subtitle>
-          </Body>
-          <Right>
-            <Button onPress={() => this.Post()} transparent>
-              <Icon name='checkmark-circle-outline' />
-            </Button>
-          </Right>
-        </Header>
-      
-        <View style={styles.root} >
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Form style={{ marginHorizontal: 20, marginVertical: 20 }}>
-              <Item  regular>
-              
-                <Input style={{  color: 'black' }} onChangeText={title => this.setState({ title: title })} placeholder=" add title" />
-              </Item>
-
-              <Textarea style={{ marginTop: 10 }} onChangeText={text => this.setState({ text: text })} rowSpan={12} bordered placeholder=" add deskripsion" />
-
-              <Item regular style={{ marginTop: 10 }}>
-								<Picker
-									mode="dropdown"
-									placeholder="Pilih kategori..."
-									placeholderStyle="black"
-									placeholderIconColor="black"
-									style={{ paddingLeft: 20, color: 'black' }}
-									selectedValue={this.state.id_category}
-									onValueChange={(selected) => {
-                    this.setState({
-                        id_category: selected
-                    })
-									}}
-							  >
-									{
-										this.state.kategoriS.map(item => (
-													<Picker.Item label={'category ' +item.category_name } value={item.id_category} />
-											))
-									}
-								</Picker>
-              </Item>
-
-              <Button  style={{ marginTop: 10,backgroundColor:'white' }} >
-                <Text style={{ width: '100%', textAlign: 'center', }}></Text>
-              </Button>
-            </Form>
-          </ScrollView>
-        </View>
-        </Container>
-      )
-    }
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  Easing,
+  Animated,
+  TouchableHighlight,
+  ScrollView
+} from 'react-native'
+const arr = []
+for (var i = 0; i < 100; i++) {
+  arr.push(i)
 }
+const timing = 4000
 
-const mapStateToProps = state => {
-    return {
-        kategoriP: state.reKategori.ListKategori.result
-    }
-}
-
-export default connect(mapStateToProps)(Register)
-const styles = StyleSheet.create({
-  root:{
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 0,
-  },
-  staticImage:{
-    width: "100%",
-    height:200,
-    marginTop: 10,
-		justifyContent: 'center',
-    alignItems: 'center',
+export class DetailHarga extends Component {
+  constructor() {
+    super()
+    this.animatedValue = new Animated.Value(0)
   }
-})
+
+  animate(easing) {
+    this.animatedValue.setValue(0)
+    Animated.timing(
+      this.animatedValue,
+      {
+        toValue: 1,
+        duration: 1000,
+        easing
+      }
+    ).start()
+  }
+
+  render() {
+    const marginLeft = this.animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [10, 300]
+    })
+    return (
+      <View style={styles.container}>
+        <Animated.View style={[styles.block, { marginLeft }]} />
+        <ScrollView>
+          <Text style={{ textAlign: 'center' }}>Scroll up for more animations</Text>
+          <Button easing='Bounce' onPress={this.animate.bind(this, Easing.bounce)} />
+          <Button easing='Cubic' onPress={this.animate.bind(this, Easing.cubic)} />
+          <Button easing='Back' onPress={this.animate.bind(this, Easing.back(2))} />
+          <Button easing='Elastic' onPress={this.animate.bind(this, Easing.elastic(2))} />
+          <Button easing='Ease' onPress={this.animate.bind(this, Easing.ease)} />
+          <Button easing='InOut' onPress={this.animate.bind(this, Easing.inOut(Easing.quad))} />
+          <Button easing='In' onPress={this.animate.bind(this, Easing.in(Easing.quad))} />
+          <Button easing='Out' onPress={this.animate.bind(this, Easing.out(Easing.quad))} />
+          <Button easing='Sin' onPress={this.animate.bind(this, Easing.sin)} />
+          <Button easing='Linear' onPress={this.animate.bind(this, Easing.linear)} />
+          <Button easing='Quad' onPress={this.animate.bind(this, Easing.quad)} />
+        </ScrollView>
+      </View>
+    );
+  }
+}
+
+const Button = ({ onPress, easing }) => (
+  <TouchableHighlight style={styles.button} onPress={onPress}>
+    <Text>{easing}</Text>
+  </TouchableHighlight>
+)
+
+var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 20
+  },
+  button: {
+    height: 60,
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: '#ededed',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10
+  },
+  block: {
+    width: 50,
+    height: 50,
+    backgroundColor: 'red'
+  }
+});
+
+export default DetailHarga
+

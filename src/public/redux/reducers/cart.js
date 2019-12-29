@@ -1,5 +1,6 @@
 const initialState = {
 	CartList: [],
+	TransformedArray: [],
 	CartCount: 0,
 	CartQty: 0,
 	TotalPrice: 0,
@@ -21,21 +22,28 @@ const users = (state = initialState, action) => {
 				};
 			} else {
 				return {
-				...state,
-				isLoading: false,
-				isFulfilled: true,
-				CartList: action.item,
-			};
+					...state,
+					isLoading: false,
+					isFulfilled: true,
+					CartList: action.item,
+				};
 			}
-			
+
 
 		case 'CART_PRICE':
-			console.log('action.harga :', action.harga);
 			return {
 				...state,
 				isLoading: false,
 				isFulfilled: true,
 				TotalPrice: action.harga,
+			};
+		case 'CART_TRANSFORM':
+			console.log('actionarray', action.array)
+			return {
+				...state,
+				isLoading: false,
+				isFulfilled: true,
+				TransformedArray: action.array,
 			};
 		case 'CART_QUANTITY':
 			let data

@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { ScrollView, View, FlatList, ActivityIndicator, TouchableOpacity,Animated ,Easing} from 'react-native'
+import { ScrollView, View, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { Container, Icon, List, ListItem, Thumbnail, Text, Left, Body, Right, Button, Content } from 'native-base';
 import Header from '../components/Header'
@@ -16,51 +16,20 @@ export default function Home({ navigation }) {
   const [allPrice, setAllPrice] = useState(false);
   const [stateCart, setStateCart] = useState([]);
   const [menuState, setMenuState] = useState([]);
-  const [value] = useState(new Animated.Value(0))  // Initial value for opacity: 0
-  
-  const UUP = () =>{
-    Animated.timing(
-      value,
-      {
-        toValue: 1,
-        duration: 2000,
-        easing : Easing.bounce,
-      }
-    ).start();
-  }
 
-  const DOOWN = () =>{
-    Animated.timing(
-      value,
-      {
-        toValue: 0,
-        duration: 5000,
-        easing : Easing.bounce
-      }
-    ).start();
-  }
-  
-
-  let bottom = value.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-200, 0],
-  });
-
-  let reduxMenu, transformedArray, stickyHead = []
-  reduxMenu = useSelector(state => state.reItem)
+  // let reduxCart, transformedArray, stickyHead = []
   const reduxCart = useSelector(state => state.reCart)
   const dispatch = useDispatch();
+  let baru =[]
 
   useEffect(() => {
-    const getData = async () => {
-      await dispatch(getAllItem())
-      setMenuState(reduxMenu)
-    }
-    getData()
+    setMenuState(reduxCart.TransformedArray)
   }, [])
-
-
-  transformedArray = reduxMenu.itemList.flatMap(({ items, ...o }) => [o, ...items])
+    
+  baru = reduxCart.TransformedArray.filter(menu=> menu.quantity > 0 )
+  console.log('reduxCart', reduxCart.TransformedArray)
+  console.log('baru', baru)
+  // transformedArray = reduxCart.itemList.flatMap(({ items, ...o }) => [o, ...items])
 
   const RefreshFunc = async () => {
     dispatch(cartQty(0))
@@ -86,12 +55,12 @@ export default function Home({ navigation }) {
     setDataModal(data)
   }
 
-  transformedArray.map(obj => {
-    if (obj.price == null) {
-      stickyHead.push(transformedArray.indexOf(obj));
-    }
-  });
-  stickyHead.push(0);
+  // transformedArray.map(obj => {
+  //   if (obj.price == null) {
+  //     stickyHead.push(transformedArray.indexOf(obj));
+  //   }
+  // });
+  // stickyHead.push(0);
 
   const increment = async (item) => {
     var id = stateCart.indexOf(item)
@@ -116,20 +85,17 @@ export default function Home({ navigation }) {
     let index = reduxCart.CartList.indexOf(item)
 
     if (index === -1) {
-      UUP()
-      dispatch(cartTransFormedArray(transformedArray))
       dispatch(cartQty(+1))
       stateCart.push(item)
       item.quantity = 1
       setAllPrice(allPrice + (item.quantity * item.price))
     } else {
-      DOOWN()
-      dispatch(cartTransFormedArray(transformedArray))
       dispatch(cartQty(-item.quantity))
       stateCart.splice(index, 1)
       setAllPrice(allPrice - (item.quantity * item.price))
       item.quantity = 0
     }
+
     dispatch(cartTotalPrice(allPrice))
     dispatch(cartOperator(stateCart))
   }
@@ -140,20 +106,13 @@ export default function Home({ navigation }) {
     dispatch(cartOperator("cancel"))
     dispatch(cartTotalPrice(0))
     transformedArray.map(data => {
-      if (data.quantity > 0) {
-        data.quantity = 0
+      if (data.quantity > 0 ) {
+           data.quantity = 0 
       }
-    });
+  });
 
   }
   const renderItem = ({ item }) => {
-    if (item.price == null) {
-      return (
-        <ListItem style={{ borderWidth: 1, borderColor: "black", height: 20 }} itemDivider>
-          <Text>{item.category_name}</Text>
-        </ListItem>
-      )
-    } else {
       return (
         <ListItem thumbnail>
           <Left style={{ marginLeft: "-2%" }}  >
@@ -198,15 +157,14 @@ export default function Home({ navigation }) {
             </View>
           </Right>
         </ListItem>
-      );
-    }
+      )
   }
   return (
     <>
       <Container>
-        <Header buttonFunc={() => navigation.toggleDrawer()} personIcon={() => navigation.navigate('Animation')} title="Menu List" />
-        {
-          reduxMenu.isLoading ?
+        <Header buttonFunc={() => navigation.toggleDrawer()} title="chart" />
+        {/* {
+          reduxCart.isLoading ?
             <>
               <ActivityIndicator style={{ marginTop: "10%" }} size="large" color="#0000ff" />
               <ScrollView />
@@ -216,17 +174,19 @@ export default function Home({ navigation }) {
             <FlatList
               refreshing={isLoading}
               onRefresh={RefreshFunc}
-              data={transformedArray}
+              data={baru}
               renderItem={renderItem}
               // keyExtractor={item => item.index}
-              stickyHeaderIndices={stickyHead}
             />
-        }
-        <Animated.View style={{bottom}}>
-
-          <Footer nav={() => navigation.navigate('Detail')} current={"home"} hapus={() => cancel()} />
-        </Animated.View>
-
+        } */}
+        <FlatList
+              refreshing={isLoading}
+              onRefresh={RefreshFunc}
+              data={baru}
+              renderItem={renderItem}
+              keyExtractor={item => item.index}
+            />
+        <Footer nav={() => navigation.navigate('Detail')} current={"detail"} hapus={() => cancel()}/>
       </Container>
       <ModalComp data={dataModal} toggleModal={() => toggleModal()} visibility={isModalVisible} />
     </>

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {  Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
-import { Text, View } from 'react-native'
 
-const Ndass = ({ title, buttonFunc }) => {
+const Ndass = ({ title, buttonFunc,personIcon }) => {
   return (
     <Header style={{backgroundColor:"white"}}>
       <Left style={{flex:1}}>
@@ -13,8 +12,8 @@ const Ndass = ({ title, buttonFunc }) => {
       <Body style={{flex:1}}>
         <Title style={{alignSelf:"center",color:"black" }}>{title}</Title>
       </Body>
-      <Right onPress={()=>alert("tes")} style={{flex:1}}>
-        <Button  transparent>
+      <Right  style={{flex:1}}>
+        <Button onPress={personIcon} transparent>
           <Icon style={{color:"black"}} name='person' />
         </Button>
       </Right>
